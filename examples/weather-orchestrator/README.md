@@ -1,32 +1,34 @@
-# weather-orchestrator — DSH workflow 移植
+English | [中文](README.zh-CN.md)
 
-上游原型：[claude-code-best-practice 的 Command → Agent → Skill 编排链](https://github.com/shanraisshan/claude-code-best-practice)：
+# weather-orchestrator — A DSH workflow port
+
+Upstream prototype: the [Command → Agent → Skill orchestration chain in claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice):
 
 ```
 /weather-orchestrator (command)  →  weather-agent (subagent)  →  weather-fetcher / weather-svg-creator (skills)
 ```
 
-## DSH 版：一个 workflow 脚本
+## DSH edition: a single workflow script
 
-[`weather-orchestrator.workflow.js`](weather-orchestrator.workflow.js) 用 DSH 的 `workflow` 工具把整条链压缩为代码级编排：
+[`weather-orchestrator.workflow.js`](weather-orchestrator.workflow.js) compresses the entire chain into code-level orchestration using DSH's `workflow` tool:
 
-| 上游（markdown 契约） | DSH（workflow 脚本） | 差异 |
+| Upstream (markdown contract) | DSH (workflow script) | Difference |
 |---|---|---|
-| command markdown 里的「Execution Contract (non-negotiable)」 | 脚本顺序 + `if (!weather) throw` | 强制力从「恳求模型自觉」变为「代码保证」 |
-| AskUserQuestion 问单位 | `args: { city, unit }` | 参数化，可被 task-board 定时任务驱动 |
-| Agent 工具调用 weather-agent | `agent(prompt, { schema })` | 结构化输出 schema 由运行时校验 |
-| Skill 工具调用 weather-svg-creator | 第二个 `agent()` 写文件 | 阶段化日志（`phase`/`log`） |
-| 失败时「stop and report」 | `throw` → 工作流中止 | fail-closed 是真实控制流 |
+| The "Execution Contract (non-negotiable)" in the command markdown | Script sequencing + `if (!weather) throw` | Enforcement moves from "begging the model to comply" to "guaranteed by code" |
+| AskUserQuestion prompts for the unit | `args: { city, unit }` | Parameterized; can be driven by task-board scheduled jobs |
+| Agent tool invoking weather-agent | `agent(prompt, { schema })` | Structured output schema validated by the runtime |
+| Skill tool invoking weather-svg-creator | A second `agent()` writes the files | Phased logging (`phase`/`log`) |
+| "stop and report" on failure | `throw` → workflow aborts | fail-closed becomes real control flow |
 
-## 实跑产物（Dubai, °C）
+## Artifacts from a live run (Dubai, °C)
 
-- [`weather.svg`](weather.svg) — 深色渐变天气卡片（34°C · 晴朗 · 湿度 65% · 北风 26 km/h）
-- [`output.md`](output.md) — 文字总结
+- [`weather.svg`](weather.svg) — dark-gradient weather card (34°C · clear · humidity 65% · north wind 26 km/h)
+- [`output.md`](output.md) — textual summary
 
-## 复现
+## Reproducing
 
-在 DSH 会话中对 agent 说：
+In a DSH session, tell the agent:
 
-> 用 workflow 工具运行 `examples/weather-orchestrator/weather-orchestrator.workflow.js` 的内容，args 传 `{ "city": "Shanghai", "unit": "C" }`
+> Run the contents of `examples/weather-orchestrator/weather-orchestrator.workflow.js` with the workflow tool, passing args `{ "city": "Shanghai", "unit": "C" }`
 
-即可换个城市再跑一次。
+to run it again for a different city.

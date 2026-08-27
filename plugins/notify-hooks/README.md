@@ -1,42 +1,44 @@
-# notify-hooks — DSH 事件通知中心
+English | [中文](README.zh-CN.md)
 
-把 Claude Code 的 [hooks 声音通知最佳实践](https://github.com/shanraisshan/claude-code-best-practice)移植到 DeepSeek Harness（DSH）的动态 Cordis 插件。
+# notify-hooks — DSH Event Notification Center
 
-## 功能
+A dynamic Cordis plugin that ports Claude Code's [hooks sound notification best practice](https://github.com/shanraisshan/claude-code-best-practice) to DeepSeek Harness (DSH).
 
-订阅 DSH Host 事件，在 Web GUI 右上角实时弹出 toast，可选提示音：
+## Features
 
-| Host 事件 | 通知 | 图标 |
+Subscribes to DSH Host events and pops up real-time toasts in the top-right corner of the Web GUI, with an optional alert sound:
+
+| Host Event | Notification | Icon |
 |---|---|---|
-| `agent/status` → idle（本轮有工具调用才发，8s 节流） | 回合完成，代理已空闲 | ✅ |
-| `tools/result`（`isError: true`） | 工具执行失败 | ❌ |
-| `agent/error` | 代理出错 | ⚠️ |
-| `subagent/end` | 子代理结束 | 🤖 |
-| `workflow/end` | 工作流运行结束 | 🧩 |
-| `agent/session-start` | 会话已开始 | 🚀 |
+| `agent/status` → idle (only sent when the round included tool calls, 8s throttle) | Round complete, agent is idle | ✅ |
+| `tools/result` (`isError: true`) | Tool execution failed | ❌ |
+| `agent/error` | Agent error | ⚠️ |
+| `subagent/end` | Subagent finished | 🤖 |
+| `workflow/end` | Workflow run finished | 🧩 |
+| `agent/session-start` | Session started | 🚀 |
 
-## 架构
+## Architecture
 
 ```
-DSH Host 事件 ──ctx.on()──▶ Host 半：内存环形缓冲（50 条，只取叶子字段）
-                                   │  harness.handle('notify/poll')
-                                   ▼  （RPC 仅 Client→Host，故用轮询，1.5s）
-                          Client 半：shell.overlay Slot 渲染 toast 栈
-                                   + React <audio> 播放内嵌 base64 WAV beep
+DSH Host events ──ctx.on()──▶ Host half: in-memory ring buffer (50 entries, leaf fields only)
+                                     │  harness.handle('notify/poll')
+                                     ▼  (RPC is Client→Host only, hence polling at 1.5s)
+                            Client half: shell.overlay slot renders the toast stack
+                                     + React <audio> plays an embedded base64 WAV beep
 ```
 
-设计要点：
+Design notes:
 
-- **轮询而非推送**：Cordis Package 私有 RPC 只有 Client→Host 方向，Client 用 `timer` 服务每 1.5s 拉取增量（按 `seq` 游标）。
-- **防打扰**：回合空闲通知要求「距上次空闲以来 ≥1 次工具调用」且 8 秒不重复；首次轮询不回放历史缓冲。
-- **音频解锁**：浏览器自动播放策略要求先有一次用户手势——点一次「🔕→🔔」开关即解锁并试听。
-- **生命周期干净**：所有监听器走 `ctx.on()`、定时器走 `ctx.timeout/interval`、样式走 `styles.insert`，停止/更新插件时全部自动回收。
+- **Polling instead of push**: Cordis Package-private RPC only supports the Client→Host direction, so the Client uses the `timer` service to pull increments every 1.5s (tracked by a `seq` cursor).
+- **Anti-interruption**: an idle-round notification requires at least one tool call since the last idle, and repeats are suppressed for 8 seconds; the first poll does not replay the historical buffer.
+- **Audio unlock**: the browser autoplay policy requires a user gesture first — clicking the "🔕→🔔" toggle once unlocks audio and plays a test beep.
+- **Clean lifecycle**: all listeners go through `ctx.on()`, timers through `ctx.timeout/interval`, and styles through `styles.insert`; everything is automatically disposed when the plugin stops or updates.
 
-## 使用方式
+## Usage
 
-动态 Cordis 插件是进程级的：在 DSH 会话中让 agent 读取本目录的 `host.js` / `client.js`，经 `cordis_define` + `cordis_run` 激活（Client 半需在 Run 卡片上授权一次）。重启 DSH 进程后需重新激活。
+Dynamic Cordis plugins are process-level: inside a DSH session, have the agent read `host.js` / `client.js` in this directory and activate them via `cordis_define` + `cordis_run` (the Client half requires a one-time approval on the Run card). After restarting the DSH process, the plugin must be activated again.
 
-## 文件
+## Files
 
-- `host.js` — Host 半：事件订阅 + 缓冲 + `notify/poll`、`notify/test` 两个 RPC
-- `client.js` — Client 半：overlay toast 栈 + 声音开关
+- `host.js` — Host half: event subscription + buffering + the `notify/poll` and `notify/test` RPCs
+- `client.js` — Client half: overlay toast stack + sound toggle

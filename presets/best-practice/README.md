@@ -1,19 +1,21 @@
+English | [中文](README.zh-CN.md)
+
 # best-practice — DSH Agent Preset
 
-在 `standard` 全功能编码 Agent 的基础上，注入蒸馏自 [claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) 83 条 tips 的**跨宿主通用工作纪律**（剔除了 `/rewind`、双击 Esc 等 Claude Code UI 专属技巧）。
+Built on the `standard` full-featured coding agent, this preset injects **cross-host universal work discipline** distilled from the 83 tips of [claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) (Claude Code UI-specific tricks such as `/rewind` and double-tap Esc are excluded).
 
-## 注入的纪律（persona 段）
+## Injected discipline (persona section)
 
-| 类别 | 要点 |
+| Category | Key points |
 |---|---|
-| 规划 | 先只读探索再计划；歧义先澄清；垂直切片优于水平分层 |
-| 上下文 | 子代理做上下文隔离（只回收结论）；过半主动 compact / 新会话 |
-| 执行 | 小步提交；不留半成品迁移；先搜索现有工具再自研 |
-| 验证 | 宣称完成前必须有证据（测试/输出/截图）；失败先定位根因 |
-| 审查 | 高风险改动请独立 subagent 审查；小而可回滚的 PR + squash merge |
-| 沉淀 | 高频重复 → skill；失败点 → skill 的 Gotchas |
+| Planning | Explore read-only before planning; clarify ambiguity first; prefer vertical slices over horizontal layers |
+| Context | Use subagents for context isolation (collect only conclusions); proactively compact / start a new session past halfway |
+| Execution | Commit in small steps; leave no half-finished migrations; search for existing tools before building your own |
+| Verification | Provide evidence (tests/output/screenshots) before claiming completion; locate the root cause first on failure |
+| Review | Request independent subagent review for high-risk changes; small, rollback-friendly PRs + squash merge |
+| Retention | Frequent repetition → skill; failure points → skill Gotchas |
 
-## 安装
+## Installation
 
 ```powershell
 # Windows
@@ -25,13 +27,13 @@ Copy-Item -Recurse presets/best-practice "$env:USERPROFILE\.dsh\.agent-presets\"
 cp -r presets/best-practice ~/.dsh/.agent-presets/
 ```
 
-重启 DSH 后，新建会话时在预设选择器中选「**最佳实践模式**」。
+After restarting DSH, select "**最佳实践模式**" (Best Practice mode) in the preset selector when creating a new session.
 
-## 文件
+## Files
 
-- `agent.cordis.yml` — 完整 agent-plane 组合（standard 的全部工具行 + 注入 persona 纪律段），已通过 `standingKeyFor` 挂载校验
-- `preset.yml` — 选择器显示名与描述
+- `agent.cordis.yml` — complete agent-plane composition (all tool rows of standard + the injected persona discipline section), validated for mounting via `standingKeyFor`
+- `preset.yml` — display name and description shown in the selector
 
-## 配套
+## Companion
 
-与 [`plugins/notify-hooks/`](../../plugins/notify-hooks/) 动态插件搭配使用，即为本仓库对 Claude Code 最佳实践的完整插件化映射。
+Pair it with the [`plugins/notify-hooks/`](../../plugins/notify-hooks/) dynamic plugin — together they form this repository's complete plugin-based mapping of the Claude Code best practices.
