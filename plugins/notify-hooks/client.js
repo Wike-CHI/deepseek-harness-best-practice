@@ -15,6 +15,7 @@ return {
       'subagent-end': { icon: '🤖', color: '#3b82f6' },
       'workflow-end': { icon: '🧩', color: '#a855f7' },
       'session-start': { icon: '🚀', color: '#14b8a6' },
+      'guard-warn': { icon: '🛡️', color: '#f97316' },
     }
 
     styles.insert([

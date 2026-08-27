@@ -16,6 +16,9 @@
 | `subagent/end` | 子代理结束 | 🤖 |
 | `workflow/end` | 工作流运行结束 | 🧩 |
 | `agent/session-start` | 会话已开始 | 🚀 |
+| `tools/pre-execute`（shell 命令命中危险模式，**warn-only 不拦截**） | 危险命令提醒 | 🛡️ |
+
+🛡️ 守卫是 Claude Code `PreToolUse` hook 的 DSH 对应物：`tools/pre-execute` **瀑布**监听对 `pwsh`/`bash` 命令字符串做模式匹配（rm -rf、format、dd、`git push --force`、fork 炸弹、管道执行远程脚本等），推送警告 toast 后一律 `return next()` 放行执行。
 
 ## 架构
 

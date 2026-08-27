@@ -1,0 +1,53 @@
+name: Feature Request
+description: Propose a new Claude Code concept to port to DeepSeek Harness
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repo ports Claude Code best practices to DSH as plugins, presets, and workflows.
+        Tell us which concept you would like to see ported and how it might map onto DSH.
+  - type: textarea
+    id: concept
+    attributes:
+      label: Claude Code Concept
+      description: Which Claude Code concept or best practice should be ported?
+      placeholder: e.g. status line, output styles, plan mode ...
+    validations:
+      required: true
+  - type: input
+    id: upstream-link
+    attributes:
+      label: Upstream Link
+      description: Link to the upstream source (docs, repo, or discussion) describing the concept.
+      placeholder: https://github.com/shanraisshan/claude-code-best-practice/...
+    validations:
+      required: true
+  - type: dropdown
+    id: dsh-mechanism
+    attributes:
+      label: Expected DSH Mechanism
+      description: Which DSH mechanism do you expect this concept to map to?
+      options:
+        - Dynamic Cordis plugin (Host events / Client Slot / Tools)
+        - Agent preset (cordis.yml composition)
+        - Workflow (workflow tool orchestration)
+        - Mapping analysis / report only
+        - Not sure — let's discuss
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation & Use Case
+      description: Why is this port useful? What workflow does it improve in DSH?
+    validations:
+      required: false
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Implementation Sketch (optional)
+      description: Rough idea of the implementation (Host half / Client half / Services / Slots involved). Open to discussion!
+    validations:
+      required: false

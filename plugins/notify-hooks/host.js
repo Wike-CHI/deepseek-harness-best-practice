@@ -7,6 +7,19 @@ return {
     let workedSinceIdle = 0
     let lastIdleNotifyAt = 0
 
+    // PreToolUse guard patterns: matched against pwsh/bash command strings.
+    // Warn-only by design — the listener always returns next() and never blocks.
+    const DANGEROUS = [
+      { re: /\brm\s+(-[a-zA-Z]+\s+)*-[a-zA-Z]*r[a-zA-Z]*f/i, label: 'rm -rf 递归强删' },
+      { re: /Remove-Item[\s\S]*-Recurse[\s\S]*-Force/i, label: 'Remove-Item -Recurse -Force 递归强删' },
+      { re: /\bformat\s+[a-zA-Z]:/i, label: 'format 磁盘格式化' },
+      { re: /\bmkfs\b/i, label: 'mkfs 创建文件系统' },
+      { re: /\bdd\s+if=/i, label: 'dd 原始磁盘写入' },
+      { re: /git\s+push[\s\S]*--force/i, label: 'git push --force 强制推送' },
+      { re: /:\(\)\s*\{\s*:\|:/, label: 'fork 炸弹' },
+      { re: /(curl|iwr|Invoke-WebRequest)[^\n|]*\|\s*(sudo\s+)?(bash|sh|pwsh|powershell)/i, label: '管道执行远程脚本' },
+    ]
+
     function nowMs() { try { return Date.now() } catch (e) { return 0 } }
     function clock() {
       try {
@@ -26,6 +39,24 @@ return {
       })
       if (items.length > 50) items.splice(0, items.length - 50)
     }
+
+    // PreToolUse counterpart: waterfall listener, warn-only passthrough
+    // (a waterfall listener MUST call and return next() to keep the dispatch alive).
+    ctx.on('tools/pre-execute', (exec, next) => {
+      try {
+        const name = exec && exec.name ? String(exec.name) : ''
+        if (name === 'pwsh' || name === 'bash') {
+          const cmd = exec && exec.arguments && typeof exec.arguments.command === 'string' ? exec.arguments.command : ''
+          for (let i = 0; i < DANGEROUS.length; i++) {
+            if (DANGEROUS[i].re.test(cmd)) {
+              push('guard-warn', '危险命令提醒: ' + DANGEROUS[i].label, cmd.slice(0, 160))
+              break
+            }
+          }
+        }
+      } catch (e) {}
+      return next()
+    })
 
     ctx.on('tools/result', (exec, result) => {
       try {

@@ -16,6 +16,9 @@ Subscribes to DSH Host events and pops up real-time toasts in the top-right corn
 | `subagent/end` | Subagent finished | 🤖 |
 | `workflow/end` | Workflow run finished | 🧩 |
 | `agent/session-start` | Session started | 🚀 |
+| `tools/pre-execute` (shell command matches a dangerous pattern, **warn-only**, never blocks) | Dangerous command warning | 🛡️ |
+
+The 🛡️ guard is the DSH counterpart of Claude Code's `PreToolUse` hook: a `tools/pre-execute` **waterfall** listener pattern-matches `pwsh`/`bash` command strings (rm -rf, format, dd, `git push --force`, fork bombs, curl-pipe-to-shell, …) and pushes a warning toast, then always `return next()` to let execution proceed.
 
 ## Architecture
 
