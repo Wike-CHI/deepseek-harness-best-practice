@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-label="Dubai weather card">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f1b2d"/>
+      <stop offset="100%" stop-color="#1b2f4b"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd76a" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#ffb347" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ffb347" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffd76a"/>
+      <stop offset="100%" stop-color="#ff9d5c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Card -->
+  <rect x="8" y="8" width="704" height="344" rx="28" fill="url(#bg)"/>
+  <rect x="8" y="8" width="704" height="344" rx="28" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1.5"/>
+
+  <!-- Decorative sun glow -->
+  <circle cx="560" cy="120" r="110" fill="url(#sunGlow)"/>
+
+  <!-- Sun icon -->
+  <g transform="translate(560,120)">
+    <circle r="34" fill="url(#accent)"/>
+    <g stroke="#ffd76a" stroke-width="5" stroke-linecap="round">
+      <line x1="0" y1="-50" x2="0" y2="-62"/>
+      <line x1="0" y1="50" x2="0" y2="62"/>
+      <line x1="-50" y1="0" x2="-62" y2="0"/>
+      <line x1="50" y1="0" x2="62" y2="0"/>
+      <line x1="-35.4" y1="-35.4" x2="-43.8" y2="-43.8"/>
+      <line x1="35.4" y1="-35.4" x2="43.8" y2="-43.8"/>
+      <line x1="-35.4" y1="35.4" x2="-43.8" y2="43.8"/>
+      <line x1="35.4" y1="35.4" x2="43.8" y2="43.8"/>
+    </g>
+  </g>
+
+  <!-- City -->
+  <text x="56" y="88" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="34" font-weight="600" fill="#eef4ff">Dubai</text>
+  <text x="56" y="118" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="17" fill="#8fa3c4">阿拉伯联合酋长国 · 晴朗</text>
+
+  <!-- Big temperature -->
+  <text x="52" y="228" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="104" font-weight="700" fill="#ffffff">34°</text>
+  <text x="212" y="160" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#ffd76a">°C</text>
+  <text x="212" y="200" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="20" fill="#c9d8ee">晴 ☀</text>
+  <text x="212" y="228" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="16" fill="#8fa3c4">体感约 42 °C</text>
+
+  <!-- Divider -->
+  <line x1="56" y1="258" x2="664" y2="258" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+
+  <!-- Detail chips -->
+  <g font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">
+    <g>
+      <rect x="56" y="278" width="136" height="46" rx="12" fill="#ffffff" fill-opacity="0.06"/>
+      <text x="72" y="297" font-size="12" fill="#8fa3c4">湿度</text>
+      <text x="72" y="316" font-size="16" font-weight="600" fill="#eef4ff">65%</text>
+    </g>
+    <g>
+      <rect x="204" y="278" width="156" height="46" rx="12" fill="#ffffff" fill-opacity="0.06"/>
+      <text x="220" y="297" font-size="12" fill="#8fa3c4">风</text>
+      <text x="220" y="316" font-size="16" font-weight="600" fill="#eef4ff">北风 · 26 km/h</text>
+    </g>
+    <g>
+      <rect x="372" y="278" width="140" height="46" rx="12" fill="#ffffff" fill-opacity="0.06"/>
+      <text x="388" y="297" font-size="12" fill="#8fa3c4">降水</text>
+      <text x="388" y="316" font-size="16" font-weight="600" fill="#eef4ff">无</text>
+    </g>
+    <g>
+      <rect x="524" y="278" width="140" height="46" rx="12" fill="#ffffff" fill-opacity="0.06"/>
+      <text x="540" y="297" font-size="12" fill="#8fa3c4">更新</text>
+      <text x="540" y="316" font-size="15" font-weight="600" fill="#eef4ff">2026-08-27 20:44</text>
+    </g>
+  </g>
+</svg>
