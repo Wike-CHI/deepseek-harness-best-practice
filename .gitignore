@@ -1,0 +1,7 @@
+# 第三方参考快照（上游仓库副本，不纳入版本库）
+framework/
+
+# 系统/临时文件
+Thumbs.db
+*.log
+node_modules/
