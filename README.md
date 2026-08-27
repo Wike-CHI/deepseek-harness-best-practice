@@ -16,6 +16,7 @@ Claude Code 最佳实践的绝大部分概念都能映射到 DSH，**无需改�
 | 路径 | 内容 |
 |---|---|
 | [`plugins/notify-hooks/`](plugins/notify-hooks/) | 事件通知中心：Host 事件订阅 → 右上角 toast + 提示音（对应 Claude Code hooks 声音通知） |
+| [`presets/best-practice/`](presets/best-practice/) | 最佳实践 agent preset：standard 全功能 + 蒸馏的工作纪律 persona 注入 |
 | [`reports/claude-code-to-dsh-mapping.md`](reports/claude-code-to-dsh-mapping.md) | 10 项概念的逐项映射分析 + 落地路线 |
 
 ## 映射速览

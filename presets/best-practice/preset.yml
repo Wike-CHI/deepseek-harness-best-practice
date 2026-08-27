@@ -1,0 +1,2 @@
+name: 最佳实践模式
+description: 在 standard 全功能编码 Agent 基础上注入蒸馏自 claude-code-best-practice 的工作纪律（规划先行、上下文预算、小步提交、验证证据、独立审查、经验沉淀）。配套 notify-hooks 动态插件提供事件通知。

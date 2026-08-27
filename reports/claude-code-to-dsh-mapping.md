@@ -45,8 +45,9 @@
 ## 五、状态
 
 - [x] 仓库盘点与映射分析（已向用户汇报）
-- [ ] 通知 Hook 插件（用户待定）
-- [ ] 最佳实践 preset（用户待定）
+- [x] 通知 Hook 插件 → `plugins/notify-hooks/`（notify-1/pkg-1 已激活运行）
+- [x] 最佳实践 preset → `presets/best-practice/`（已安装到 ~/.dsh/.agent-presets，通过 standingKeyFor 挂载校验）
 - [ ] weather-orchestrator → workflow 移植（用户待定）
+- [x] 开源仓库：https://github.com/Wike-CHI/deepseek-harness-best-practice
 
 > 备注：曾尝试写入 Hindsight 记忆库，但 hindsight API 返回 401（未配置 API key），故改存本文件。
